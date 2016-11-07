@@ -48,7 +48,8 @@ namespace CG_MATH
 		vector3 operator/(float a) const
 		{
 			// 这里不进行除0检查、
-			return vector3(x / a, y / a, z / a);
+			float oneOveraA = 1.0f / a;
+			return vector3(x *oneOveraA, y * oneOveraA, z * oneOveraA);
 		}
 		vector3& operator+=(const vector3& rhs)
 		{
@@ -73,9 +74,10 @@ namespace CG_MATH
 		}
 		vector3& operator/= (float a)
 		{
-			x /= a;
-			y /= a;
-			z /= a;
+			float oneOveraA = 1.0f / a;
+			x *= oneOveraA;
+			y *= oneOveraA;
+			z *= oneOveraA;
 			return *this;
 		}
 

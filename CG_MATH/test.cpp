@@ -1,6 +1,7 @@
 #include "vector3.h"
 #include <iostream>
 #include <string>
+#include <time.h>
 using namespace std;
 using namespace CG_MATH;
 
@@ -64,5 +65,17 @@ int main()
 		cout <<"distance of a, b is " <<distance(a, b) << endl;
 	}
 
+
+	cout << "performance test" << endl;
+	double start, end, cost;
+	start = clock();
+	for (int i = 0; i < (1 << 25); ++i)
+	{
+		vector3 a(1.0f, 3.0f, 5.0f);
+		a /= 7.0f;
+	}
+	end = clock();
+	cost = end - start;
+	cout << cost << endl;
 	return 0;
 }
