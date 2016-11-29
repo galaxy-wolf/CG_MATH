@@ -8,7 +8,7 @@ namespace CG_MATH
 	public:
 		float x, y, z;
 	// 构造函数；
-		vector3() = default;
+		vector3() = delete;
 		vector3(float nx, float ny, float nz) :x(nx), y(ny), z(nz) {}
 		vector3(const vector3& a) :x(a.x), y(a.y), z(a.z) {}
 	// 标准对象操作
@@ -107,11 +107,10 @@ namespace CG_MATH
 	}
 	inline vector3 cross(const vector3& lhs, const vector3& rhs)
 	{
-		vector3 ret;
-		ret.x = lhs.y*rhs.z - lhs.z*rhs.y;
-		ret.y = lhs.z*rhs.x - lhs.x*rhs.z;
-		ret.z = lhs.x*rhs.y - lhs.y*rhs.x;
-		return ret;
+		return vector3(
+			lhs.y*rhs.z - lhs.z*rhs.y,
+			lhs.z*rhs.x - lhs.x*rhs.z,
+			lhs.x*rhs.y - lhs.y*rhs.x);
 	}
 	// 实现标量左乘
 	inline vector3 operator * (float k, const vector3 &v)

@@ -14,7 +14,7 @@ int main()
 {
 	{
 		cout << endl << "case 1" << endl;
-		vector3 a;
+		vector3 a=kZeroVector;
 		print("a", a);
 	}
 	
