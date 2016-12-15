@@ -1,11 +1,15 @@
 #include "Camera.h"
 #include "EulerAngles.h"
+#include "MathUtil.h"
 
 //移动位置
 
 void Camera::move(float front, float left, float up) {
 
 	// 前后移动
+
+	
+	Quaternion con_dir = conjugate(dir);
 
 	if (fabs(front) > 0.0f) {
 		
@@ -14,7 +18,8 @@ void Camera::move(float front, float left, float up) {
 		Quaternion p;
 		p.w = 0.0f; p.x = 0.0f; p.y = 0.0f; p.z = -1.0f;
 
-		p = conjugate(dir)*p*dir;
+		//从相机坐标转换到世界坐标，使用dir 的逆进行变换。
+		p = conjugate(con_dir)*p*con_dir;
 
 		// 移动位置pos
 
@@ -30,7 +35,8 @@ void Camera::move(float front, float left, float up) {
 		Quaternion p;
 		p.w = 0.0f; p.x = -1.0f; p.y = 0.0f; p.z = 0.0f;
 
-		p = conjugate(dir)*p*dir;
+		//从相机坐标转换到世界坐标，使用dir 的逆进行变换。
+		p = conjugate(con_dir)*p*con_dir;
 
 		//移动位置pos
 
@@ -46,7 +52,8 @@ void Camera::move(float front, float left, float up) {
 		Quaternion p;
 		p.w = 0.0f; p.x = 0.0f; p.y = 1.0f; p.z = 0.0f;
 
-		p = conjugate(dir)*p*dir;
+		//从相机坐标转换到世界坐标，使用dir 的逆进行变换。
+		p = conjugate(con_dir)*p*con_dir;
 
 		//移动位置pos
 
@@ -57,17 +64,17 @@ void Camera::move(float front, float left, float up) {
 }
 
 //转动方向
-//单位为弧度
+//单位为角度
 // heading 绕y轴旋转 pitch 绕x轴旋转， bank 绕z轴旋转
 
 void Camera::rotate(float heading, float pitch, float bank) {
 
 	// 获得旋转四元数
-	
+
 	Quaternion h, p, b;
-	h.setToRotateAboutY(heading);
-	p.setToRotateAboutX(pitch);
-	b.setToRotateAboutZ(bank);
+	h.setToRotateAboutY(-heading / 180.0f*kPi);
+	p.setToRotateAboutX(-pitch / 180.0f*kPi);
+	b.setToRotateAboutZ(-bank / 180.0f*kPi);
 
 	dir *= h*p*b;
 }
@@ -76,8 +83,8 @@ void Camera::rotate(float heading, float pitch, float bank) {
 
 Matrix3x4 Camera::getMatrix() {
 	Matrix3x4 m1, m2;
-	m1.fromQuaternion(conjugate(dir));
-	m2.setTranslation(-pos);
+	m1.fromQuaternion(dir);
+	m2.setupTanslation(-pos);
 
 	//先平移到惯性坐标系，再旋转到视坐标系。
 	return m1*m2;
