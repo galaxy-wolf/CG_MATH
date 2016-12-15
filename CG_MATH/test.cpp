@@ -10,14 +10,14 @@
 #include "Matrix4x4.h"
 #include "Quaternion.h"
 #include "MathUtil.h"
-#include "Camera.h"
+#include "FPScamera.h"
 
 using namespace std;
 using namespace CG_MATH;
 
 //全局变量
 static bool flag = 1;
-Camera camera;
+FPScamera camera;
 
 // 初始化
 

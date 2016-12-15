@@ -1,10 +1,10 @@
-#include "Camera.h"
+#include "FPScamera.h"
 #include "EulerAngles.h"
 #include "MathUtil.h"
 
 //移动位置
 
-void Camera::move(float front, float left, float up) {
+void FPScamera::move(float front, float left, float up) {
 
 	// 前后移动
 
@@ -67,7 +67,7 @@ void Camera::move(float front, float left, float up) {
 //单位为角度
 // heading 绕y轴旋转 pitch 绕x轴旋转， bank 绕z轴旋转
 
-void Camera::rotate(float heading, float pitch, float bank) {
+void FPScamera::rotate(float heading, float pitch, float bank) {
 
 	// 获得旋转四元数
 
@@ -81,7 +81,7 @@ void Camera::rotate(float heading, float pitch, float bank) {
 
 //获取相机矩阵
 
-Matrix3x4 Camera::getMatrix() {
+Matrix3x4 FPScamera::getMatrix() {
 	Matrix3x4 m1, m2;
 	m1.fromQuaternion(dir);
 	m2.setupTanslation(-pos);

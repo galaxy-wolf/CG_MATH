@@ -6,7 +6,7 @@
 
 using namespace CG_MATH;
 
-class Camera
+class FPScamera
 {
 public:
 
@@ -20,7 +20,7 @@ public:
 
 	// 初始化相机位置，世界坐标原点，朝向-Z轴。
 
-	Camera() :pos(0.0f, 0.0f, 0.0f), dir(kQuaternionIdentity) {}
+	FPScamera() :pos(0.0f, 0.0f, 0.0f), dir(kQuaternionIdentity) {}
 	
 	//移动位置
 
