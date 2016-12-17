@@ -20,7 +20,7 @@ public:
 
 	// 初始化相机位置，世界坐标原点，朝向-Z轴。
 
-	FPScamera() :pos(0.0f, 0.0f, 0.0f), dir(kQuaternionIdentity) {}
+	FPScamera() :pos(0.0f, 0.0f, 0.0f), dir(kQuaternionIdentity), _controlHeading(0), _controlPitch(0), _controlBank(0){}
 	
 	//移动位置
 
@@ -28,10 +28,19 @@ public:
 
 	//转动方向
 
-	void rotate(float heading, float pitch, float bank);
+	void rotate2D(float heading, float pitch);
 
 	//获取相机矩阵
 
 	Matrix3x4 getMatrix();
+
+private:
+	
+	//私有数据
+
+	// 控制相机方向的欧拉角， 单位为弧度。
+	float _controlHeading;
+	float _controlPitch;
+	float _controlBank;
 };
 

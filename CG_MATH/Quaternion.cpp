@@ -349,6 +349,10 @@ namespace CG_MATH
 		result.z = k0*q0.z + k1*q1.z;
 		result.w = k0*q0.w + k1*q1.w;
 
+		// 单位化
+
+		result.normalize();
+
 		// 返回
 
 		return result;

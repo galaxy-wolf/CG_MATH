@@ -67,16 +67,31 @@ void FPScamera::move(float front, float left, float up) {
 //单位为角度
 // heading 绕y轴旋转 pitch 绕x轴旋转， bank 绕z轴旋转
 
-void FPScamera::rotate(float heading, float pitch, float bank) {
+void FPScamera::rotate2D(float heading, float pitch) {
+
+	//角度转弧度
+	heading = heading / 180.0f*kPi;
+	pitch = pitch / 180.0f*kPi;
+
+
+	// 修改heading， 限制范围在[-Pi, Pi]
+	_controlHeading += heading;
+	_controlHeading = wrapPi(_controlHeading);
+
+	// 修改pitch， 限制范围在[-pi/2, pi/2]
+	_controlPitch += pitch;
+	if (_controlPitch < -kPi * 0.45f)
+		_controlPitch = -kPi * 0.45f;
+	else if (_controlPitch > kPi * 0.45f)
+		_controlPitch = kPi * 0.45f;
 
 	// 获得旋转四元数
 
-	Quaternion h, p, b;
-	h.setToRotateAboutY(-heading / 180.0f*kPi);
-	p.setToRotateAboutX(-pitch / 180.0f*kPi);
-	b.setToRotateAboutZ(-bank / 180.0f*kPi);
+	Quaternion h, p;
+	h.setToRotateAboutY(-_controlHeading);
+	p.setToRotateAboutX(-_controlPitch);
 
-	dir *= h*p*b;
+	dir = h*p;
 }
 
 //获取相机矩阵

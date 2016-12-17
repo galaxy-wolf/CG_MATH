@@ -90,7 +90,7 @@ namespace CG_MATH
 	// 运算符*= 保持和c++标准语法的一致性
 
 	//vector3 &operator*=(const Matrix3x4 &m, const vector3 &p);
-	Matrix3x4 &operator*=(const Matrix3x4 &a, const Matrix3x4 &m);
+	Matrix3x4 &operator*=(Matrix3x4 &a, const Matrix3x4 &m);
 
 
 	// 计算3x3 部分的行列式
