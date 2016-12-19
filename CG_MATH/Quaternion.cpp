@@ -72,10 +72,10 @@ namespace CG_MATH
 
 		// 赋值
 
-		w = cos(thetaOver2);
+		w = cosf(thetaOver2);
 		x = 0.0f;
 		y = 0.0f;
-		z = sin(thetaOver2);
+		z = sinf(thetaOver2);
 	}
 
 	void Quaternion::setToRotateAboutAxis(const vector3 &axis, float theta) {
@@ -87,11 +87,11 @@ namespace CG_MATH
 		// 计算半角和sin值
 
 		float thetaOver2 = theta *.5f;
-		float sinThetaOver2 = sin(thetaOver2);
+		float sinThetaOver2 = sinf(thetaOver2);
 
 		// 赋值
 
-		w = cos(thetaOver2);
+		w = cosf(thetaOver2);
 		x = axis.x * sinThetaOver2;
 		y = axis.y * sinThetaOver2;
 		z = axis.z * sinThetaOver2;
@@ -252,7 +252,7 @@ namespace CG_MATH
 		}
 
 		// 计算 1/sin(theta/2)
-		float oneOverSinThetaOver2 = 1.0f / sqrt(sinThetaOver2Sq);
+		float oneOverSinThetaOver2 = 1.0f / sqrtf(sinThetaOver2Sq);
 
 		// 返回旋转轴
 
@@ -326,7 +326,7 @@ namespace CG_MATH
 
 			// 用三角公式sin^2(omega) + cos^2(omega) = 1 计算sin值
 
-			float sinOmega = sqrt(1.0f - cosOmega*cosOmega);
+			float sinOmega = sqrtf(1.0f - cosOmega*cosOmega);
 
 			// 根据sin和cos值计算角度
 
@@ -338,8 +338,8 @@ namespace CG_MATH
 
 			// 计算插值变量
 
-			k0 = sin((1.0f - t)*omega)*oneOverSinOmega;
-			k1 = sin(t*omega)*oneOverSinOmega;
+			k0 = sinf((1.0f - t)*omega)*oneOverSinOmega;
+			k1 = sinf(t*omega)*oneOverSinOmega;
 		}
 
 		//插值
@@ -398,7 +398,7 @@ namespace CG_MATH
 
 		// 提取半角alpha(alpha = theta/2)
 
-		float alpha = acos(q.w);
+		float alpha = acosf(q.w);
 
 		//计算新alpha值
 
@@ -407,11 +407,11 @@ namespace CG_MATH
 		// 计算新w值
 
 		Quaternion result;
-		result.w = cos(newAlpha);
+		result.w = cosf(newAlpha);
 
 		//计算新xyz值
 
-		float mult = sin(newAlpha) / sin(alpha);
+		float mult = sinf(newAlpha) / sinf(alpha);
 		result.x = q.x * mult;
 		result.y = q.y * mult;
 		result.z = q.z * mult;

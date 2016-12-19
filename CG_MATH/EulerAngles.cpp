@@ -117,7 +117,7 @@ namespace CG_MATH
 
 			// bank ÷√¡„£¨ º∆À„heading
 
-			heading = atan2(-m.m31, m.m11);
+			heading = atan2f(-m.m31, m.m11);
 			bank = 0.0f;
 		}
 		else {
@@ -153,7 +153,7 @@ namespace CG_MATH
 
 			// bank ÷√¡„£¨ º∆À„heading
 
-			heading = atan2(q.w*q.y - q.x*q.z, 0.5f - q.y*q.y - q.z*q.z);
+			heading = atan2f(q.w*q.y - q.x*q.z, 0.5f - q.y*q.y - q.z*q.z);
 			bank = 0.0f;
 		}
 		else {
@@ -161,8 +161,8 @@ namespace CG_MATH
 			// º∆À„Ω«∂»
 
 			pitch = asinf(sp);
-			heading = atan2(q.x*q.z + q.w*q.y, 0.5f - q.x*q.x - q.y*q.y);
-			bank = atan2(q.x*q.y + q.w*q.z, 0.5f - q.x*q.x - q.z*q.z);
+			heading = atan2f(q.x*q.z + q.w*q.y, 0.5f - q.x*q.x - q.y*q.y);
+			bank = atan2f(q.x*q.y + q.w*q.z, 0.5f - q.x*q.x - q.z*q.z);
 		}
 	}
 
@@ -188,7 +188,7 @@ namespace CG_MATH
 
 			// bank ÷√¡„£¨ º∆À„heading
 
-			heading = atan2(-q.x*q.z - q.w*q.y, 0.5f - q.y*q.y - q.z*q.z);
+			heading = atan2f(-q.x*q.z - q.w*q.y, 0.5f - q.y*q.y - q.z*q.z);
 			bank = 0.0f;
 		}
 		else {
@@ -196,8 +196,8 @@ namespace CG_MATH
 			// º∆À„Ω«∂»
 
 			pitch = asinf(sp);
-			heading = atan2(q.x*q.z - q.w*q.y, 0.5f - q.x*q.x - q.y*q.y);
-			bank = atan2(q.x*q.y - q.w*q.z, 0.5f - q.x*q.x - q.z*q.z);
+			heading = atan2f(q.x*q.z - q.w*q.y, 0.5f - q.x*q.x - q.y*q.y);
+			bank = atan2f(q.x*q.y - q.w*q.z, 0.5f - q.x*q.x - q.z*q.z);
 		}
 	}
 
