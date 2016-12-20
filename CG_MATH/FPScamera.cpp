@@ -1,65 +1,20 @@
 #include "FPScamera.h"
 #include "EulerAngles.h"
 #include "MathUtil.h"
+#include "RotationMatrix.h"
 
 //移动位置
 
 void FPScamera::move(float front, float left, float up) {
 
-	// 前后移动
+	RotationMatrix m;
+	m.setup(dir);
 
-	
-	Quaternion con_dir = conjugate(dir);
+	//需要得到相机坐标在世界坐标的表示，
+	// 1， m 是从世界坐标到相机坐标的转换，m的转置表示物体旋转矩阵。
+	// 2， 物体旋转矩阵的三个列即为相机X Y Z 轴在世界坐标的表示。
 
-	if (fabs(front) > 0.0f) {
-		
-		// 获取旋转后的-z轴
-
-		Quaternion p;
-		p.w = 0.0f; p.x = 0.0f; p.y = 0.0f; p.z = -1.0f;
-
-		//从相机坐标转换到世界坐标，使用dir 的逆进行变换。
-		p = conjugate(con_dir)*p*con_dir;
-
-		// 移动位置pos
-
-		pos += front*vector3(p.x, p.y, p.z);
-	}
-
-	// 左右移动
-
-	if (fabs(left) > 0.0f) {
-
-		// 获取旋转后的-x轴
-
-		Quaternion p;
-		p.w = 0.0f; p.x = -1.0f; p.y = 0.0f; p.z = 0.0f;
-
-		//从相机坐标转换到世界坐标，使用dir 的逆进行变换。
-		p = conjugate(con_dir)*p*con_dir;
-
-		//移动位置pos
-
-		pos += left*vector3(p.x, p.y, p.z);
-	}
-
-	// 上下移动
-
-	if (fabs(up) > 0.0f) {
-
-		//获取旋转后的y轴
-
-		Quaternion p;
-		p.w = 0.0f; p.x = 0.0f; p.y = 1.0f; p.z = 0.0f;
-
-		//从相机坐标转换到世界坐标，使用dir 的逆进行变换。
-		p = conjugate(con_dir)*p*con_dir;
-
-		//移动位置pos
-
-		pos += up*vector3(p.x, p.y, p.z);
-	}
-
+	pos += vector3(m.m31, m.m32, m.m33) * -1.0f * front + vector3(m.m11, m.m12, m.m13) *-1.0f*left + vector3(m.m21, m.m22, m.m23) * up;
 
 }
 
@@ -75,33 +30,25 @@ void FPScamera::rotate2D(float heading, float pitch) {
 
 
 	// 修改heading， 限制范围在[-Pi, Pi]
-	_controlHeading += heading;
-	_controlHeading = wrapPi(_controlHeading);
+	dir.heading += heading;
+	dir.heading = wrapPi(dir.heading);
 
 	// 修改pitch， 限制范围在[-pi/2, pi/2]
-	_controlPitch += pitch;
-	if (_controlPitch < -kPi * 0.45f)
-		_controlPitch = -kPi * 0.45f;
-	else if (_controlPitch > kPi * 0.45f)
-		_controlPitch = kPi * 0.45f;
+	dir.pitch += pitch;
+	if (dir.pitch < -kPi * 0.45f)
+		dir.pitch = -kPi * 0.45f;
+	else if (dir.pitch > kPi * 0.45f)
+		dir.pitch = kPi * 0.45f;
 
-	// 获得旋转四元数
-
-	Quaternion h, p;
-	h.setToRotateAboutY(-_controlHeading);
-	p.setToRotateAboutX(-_controlPitch);
-
-	dir = h*p;
 }
 
 //获取相机矩阵
 
 Matrix3x4 FPScamera::getMatrix() {
-	Matrix3x4 m1, m2;
-	m1.fromQuaternion(dir);
-	m2.setupTanslation(-pos);
-
-	//先平移到惯性坐标系，再旋转到视坐标系。
-	return m1*m2;
+	
+	Matrix3x4 m; 
+	m.setupParentToLocal(pos, dir);
+	
+	return m;
 }
 

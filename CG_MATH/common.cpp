@@ -280,7 +280,7 @@ void QuaternionTest() {
 		Quaternion q = slerp(qb, qe, (float)i / 50.0f);
 		Quaternion a;
 
-		printf("dot :%f", dotProduct(q, q));
+	//	printf("dot :%f", dotProduct(q, q));
 
 		a.w = 0.0f; a.x = 1.0f; a.y = 0.0f; a.z = 0.0f;
 		
@@ -288,7 +288,7 @@ void QuaternionTest() {
 
 		DrawAxis(vector3(a.x, a.y, a.z));
 
-		printf("%f\n", vectorMag(vector3(a.x, a.y, a.z)));
+		//printf("%f\n", vectorMag(vector3(a.x, a.y, a.z)));
 
 	}
 
