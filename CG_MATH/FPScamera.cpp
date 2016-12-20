@@ -14,8 +14,9 @@ void FPScamera::move(float front, float left, float up) {
 	// 1， m 是从世界坐标到相机坐标的转换，m的转置表示物体旋转矩阵。
 	// 2， 物体旋转矩阵的三个列即为相机X Y Z 轴在世界坐标的表示。
 
-	pos += vector3(m.m31, m.m32, m.m33) * -1.0f * front + vector3(m.m11, m.m12, m.m13) *-1.0f*left + vector3(m.m21, m.m22, m.m23) * up;
-
+	pos.x += -front*m.m31 - left*m.m11 + up*m.m21;
+	pos.y += -front*m.m32 - left*m.m12 + up*m.m22;
+	pos.z += -front*m.m33 - left*m.m13 + up*m.m23;
 }
 
 //转动方向
