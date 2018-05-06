@@ -8,3 +8,6 @@
 ## 打开测试工程
 使用Visual Studio 2015打开项目，点击运行，NuGet会自动下载依赖项nupengl。
 
+## DirectX 3D版本
+https://github.com/galaxy-wolf/CG_MATH_D3D
+
