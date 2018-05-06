@@ -55,7 +55,8 @@ namespace CG_MATH
 	// Matrix3x4::zeroTranslation
 	//将包含平移部分的第四列置为零
 
-	void Matrix3x4::zeroTanslation() {
+	void Matrix3x4::zeroTranslation()
+   {
 		tx = ty = tz = 0.0f;
 	}
 
@@ -68,10 +69,10 @@ namespace CG_MATH
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	// Matrix3x4::setupTanslation
+	// Matrix3x4::setupTranslation
 	//生成平移矩阵，参数为向量形式
 
-	void Matrix3x4::setupTanslation(const vector3 &d) {
+	void Matrix3x4::setupTranslation(const vector3 &d) {
 		
 		//线性变换部分置为单位矩阵
 
@@ -88,7 +89,7 @@ namespace CG_MATH
 	//----------------------------------------------------------------------------------------------
 	// Matrix3x4::setupLocalToParent
 	// 构造执行局部->父空间变换的矩阵，局部空间的位置和范围在父空间中描述
-	//该方法最常见的用途是构造物体->世界的变换矩阵，这个变换时非常直接的。
+	//该方法最常见的用途是构造物体->世界的变换矩阵，这个变换是非常直接的。
 	//首先从物体空间变换到惯性空间，接着变换到世界空间
 	//方位可以由欧拉角后旋转矩阵指定
 
@@ -106,7 +107,7 @@ namespace CG_MATH
 
 	void Matrix3x4::setupLocalToParent(const vector3 &pos, const RotationMatrix &orient) {
 
-		// 复制矩阵得旋转部分
+		// 复制矩阵的旋转部分
 		//根据RotationMatrix 中的注释，旋转矩阵“一般”是惯性-物体矩阵
 		//是父-局部关系
 		//我们求的是局部-父关系的矩阵，因此要做转置
@@ -115,7 +116,7 @@ namespace CG_MATH
 		m21 = orient.m12; m22 = orient.m22; m23 = orient.m32;
 		m31 = orient.m13; m32 = orient.m23; m33 = orient.m33;
 
-		//现在设置平移部分。 平移再3x3 部分"之后“， 因此我们只需要简单复制其位置即可
+		//现在设置平移部分。 平移在3x3 部分"之后“， 因此我们只需要简单复制其位置即可
 
 		tx = pos.x; ty = pos.y; tz = pos.z;
 
@@ -130,7 +131,8 @@ namespace CG_MATH
 	// 所以我们想构造两个矩阵T和R，再连接M=RT
 	// 方位可以由欧拉角或旋转矩阵指定
 
-	void Matrix3x4::setupParentToLocal(const vector3 &pos, const EulerAngles &orient) {
+	void Matrix3x4::setupParentToLocal(const vector3 &pos, const EulerAngles &orient)
+   {
 
 		// 创建一个旋转矩阵
 
@@ -142,7 +144,8 @@ namespace CG_MATH
 		setupParentToLocal(pos, orientMatrix);
 	}
 
-	void Matrix3x4::setupParentToLocal(const vector3 &pos, const RotationMatrix &orient) {
+	void Matrix3x4::setupParentToLocal(const vector3 &pos, const RotationMatrix &orient) 
+   {
 		
 		// 赋值矩阵的旋转部分
 		// 可以直接复制元素(不用转置)
@@ -174,7 +177,8 @@ namespace CG_MATH
 	// theta 是旋转量，以弧度表示，用右手法则定义“正方向”
 	//平移部分置零
 
-	void Matrix3x4::setupRotate(int axis, float theta) {
+	void Matrix3x4::setupRotate(int axis, float theta) 
+   {
 		
 		// 取得旋转角的sin和cos值
 
@@ -440,6 +444,8 @@ namespace CG_MATH
 	// 3=> 沿z= k 平面反射
 	//
 	//平移部分置为合适的值，因为k！= 0 时平移是一定会发生的
+	//
+	// 进行反射变换后，物体的内部面片会朝外，开启反面剔除后会产生影响
 
 	void Matrix3x4::setupReflect(int axis, float k) {
 
@@ -496,6 +502,8 @@ namespace CG_MATH
 	//
 	//构造反射矩阵，反射平面为通过原点的任意平面，且垂直于单位向量n
 	//平移部分置零
+	//
+	// 进行反射变换后，物体的内部面片会朝外，开启反面剔除后会产生影响
 
 	void Matrix3x4::setupReflect(const vector3 &n) {
 

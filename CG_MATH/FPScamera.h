@@ -1,12 +1,13 @@
 #pragma once
 
 #include "vector3.h"
-#include "Quaternion.h"
 #include "Matrix3x4.h"
 #include "EulerAngles.h"
 
-using namespace CG_MATH;
-
+using CG_MATH::vector3;
+using CG_MATH::EulerAngles;
+using CG_MATH::kEulerAnglesIdentity;
+using CG_MATH::Matrix3x4;
 
 class FPScamera
 {

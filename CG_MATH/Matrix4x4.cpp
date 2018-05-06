@@ -27,9 +27,23 @@ namespace CG_MATH
 		m41 = 0.0f; m42 = 0.0f; m43 = 0.0f; m44 = 1.0f;
 	}
 
-	//构造投影矩阵
+	Matrix4x4::Matrix4x4(const Matrix3x4 &a)
+	{
+		// 直接赋值
 
-	void Matrix4x4::setupPerspective(float fov, float aspect, float near, float far) {
+		m11 = a.m11; m12 = a.m12; m13 = a.m13; m14 = a.tx;
+		m21 = a.m21; m22 = a.m22; m23 = a.m23; m24 = a.ty;
+		m31 = a.m31; m32 = a.m32; m33 = a.m33; m34 = a.tz;
+		m41 = 0.0f;  m42 = 0.0f;  m43 = 0.0f;  m44 = 1.0f;
+	}
+
+	//构造投影矩阵
+	void Matrix4x4::setupPerspectiveFov(float fov, float aspect, float near, float far) 
+	{
+
+		assert(aspect != 0.0f);
+		assert(near > 0.0f);
+		assert(far > 0.0f);
 
 		// 转换成弧度
 		fov *= kPi / 180.0f;
@@ -39,7 +53,7 @@ namespace CG_MATH
 
 		//计算公共值；
 
-		float f = 1.0f / (tanf(fov / 2.0f));
+		float f = 1.0f / (tanf(fov *0.5f));
 		float nf = near - far;
 
 		assert(fabs(nf) > 0.00001);
@@ -54,10 +68,16 @@ namespace CG_MATH
 		m23 = 0.0f;
 		m24 = 0.0f;
 
+	// OpenGL 使用右手坐标系， 在投影体中的点分布在Z轴的负半轴
+	// 特别注意函数参数中的near, far 是正值, z值的变换应该是从[-far, -near] 到[1, -1] 的线性变换
+	// 推导过程：
+	// z' = (m33z+m34)/w , w = -z
+	// 这里代入 (z'=1, z= -far) 和 (z'=-1, z= -near) 两个点 
+	// 就可以求出m33, m34
 		m31 = 0.0f;
 		m32 = 0.0f;
 		m33 = (far + near) / nf;
-		m34 = (2 * far*near) / nf;
+		m34 = 2 * far*near / nf;
 
 		m41 = 0.0f;
 		m42 = 0.0f;
@@ -66,13 +86,15 @@ namespace CG_MATH
 
 	}
 
-	void Matrix4x4::setupFrustum(float left, float right, float bottom, float top, float near, float far) {
+	// left, right, bottom, top 用于描述近裁剪面上的矩形. 
+	void Matrix4x4::setupFrustum(float left, float right, float bottom, float top, float near, float far) 
+	{
 
 		//计算公共值；
 
 		float rl = right - left;
 		float tb = top - bottom;
-		float nf = near - far;
+		float nf = near-far;
 
 		assert(fabs(rl) > 0.00001);
 		assert(fabs(tb) > 0.00001);
@@ -82,31 +104,38 @@ namespace CG_MATH
 
 		//直接赋值
 
-		m11 = 2.0f*near / rl;
+		m11 = 2.0f*near/ rl;
 		m12 = 0.0f;
-		m13 = (right + left) / rl;
+		m13 = (right+left)/rl;
 		m14 = 0.0f;
 
 		m21 = 0.0f;
-		m22 = 2.0f*near / tb;
-		m23 = (top + bottom) / tb;
+		m22 = 2.0f*near/ tb;
+		m23 = (top+bottom)/tb;
 		m24 = 0.0f;
 
+	// OpenGL 使用右手坐标系， 在投影体中的点分布在Z轴的负半轴
+	// 特别注意函数参数中的near, far 是正值, z值的变换应该是从[-far, -near] 到[1, -1] 的线性变换
+	// 推导过程：
+	// z' = (m33z+m34)/w , w = -z
+	// 这里代入 (z'=1, z= -far) 和 (z'=-1, z= -near) 两个点 
+	// 就可以求出m33, m34
 		m31 = 0.0f;
 		m32 = 0.0f;
 		m33 = (far + near) / nf;
-		m34 = (2 * far*near) / nf;
+		m34 = 2*far*near / nf;
 
 		m41 = 0.0f;
 		m42 = 0.0f;
-		m43 = -1;
+		m43 = -1.0f;
 		m44 = 0.0f;
 
 	}
 
 	// 运算符* 用来连接矩阵， 乘法的顺序从左向右， 与变换顺序相反
 
-	Matrix4x4 operator*(const Matrix4x4 &a, const Matrix4x4 &m) {
+	Matrix4x4 operator*(const Matrix4x4 &a, const Matrix4x4 &m) 
+   {
 		Matrix4x4 ret;
 
 		ret.m11 = a.m11*m.m11 + a.m12*m.m21 + a.m13*m.m31 + a.m14*m.m41;
@@ -134,7 +163,8 @@ namespace CG_MATH
 
 	// 运算符*= 保持和c++标准语法一致。
 
-	Matrix4x4 &operator*= (Matrix4x4 &a, const Matrix4x4 &m) {
+	Matrix4x4 &operator*= (Matrix4x4 &a, const Matrix4x4 &m) 
+   {
 		a = a*m;
 
 		return a;

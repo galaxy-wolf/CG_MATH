@@ -33,9 +33,9 @@ namespace CG_MATH
 
 		// 直接访问平移部分
 
-		void zeroTanslation();
+		void zeroTranslation();
 		void setTranslation(const vector3 &d);
-		void setupTanslation(const vector3 &d);
+		void setupTranslation(const vector3 &d);
 
 		// 构造执行父空间 <->局部空间变换的矩阵，嘉定局部空间在指定的位置和方位， 该方位可能是使用欧拉角或旋转矩阵表示的。
 
@@ -89,7 +89,6 @@ namespace CG_MATH
 
 	// 运算符*= 保持和c++标准语法的一致性
 
-	//vector3 &operator*=(const Matrix3x4 &m, const vector3 &p);
 	Matrix3x4 &operator*=(Matrix3x4 &a, const Matrix3x4 &m);
 
 

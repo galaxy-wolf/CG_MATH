@@ -146,20 +146,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="common.cpp" />
     <ClCompile Include="FPScamera.cpp" />
     <ClCompile Include="EulerAngles.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtil.cpp" />
     <ClCompile Include="Matrix3x4.cpp" />
     <ClCompile Include="Matrix4x4.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="RotationMatrix.cpp" />
     <ClCompile Include="test.cpp" />
-    <ClCompile Include="testVector3.cpp" />
     <ClCompile Include="vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common.h" />
     <ClInclude Include="FPScamera.h" />
     <ClInclude Include="EulerAngles.h" />
     <ClInclude Include="MathUtil.h" />
@@ -167,6 +165,7 @@
     <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="RotationMatrix.h" />
+    <ClInclude Include="test.h" />
     <ClInclude Include="vector3.h" />
   </ItemGroup>
   <ItemGroup>
